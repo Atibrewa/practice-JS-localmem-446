@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--there should be no li tags here, otherwise you're missing the point of the assignment-->
+    <!--you can add a reference such as an ID or class for access -->
+    <ul id="listULtag"></ul>
+
+    <!--create simple form elements below-->
+    <form name="todoListItems" method="post"> 
+        <input type="text" name="inputItemName">
+        <button type="button" id="submitButton" onclick="submitFunc()">Submit</button>
+    </form>
+
+    <!--ideas for what you may need to do... -->
+    <script>
+        toDoList = [];
+        if (localStorage.getItem('toDoList')) {
+                let List = localStorage.getItem('toDoList');
+                toDoList = JSON.parse(List);
+                var ulTag = document.getElementById("listULtag");
+                for (item of toDoList) {
+                    let liTag = document.createElement("li");
+                    liTag.className = "listElement";
+                    ulTag.appendChild(liTag);
+                    liTag.appendChild(document.createTextNode(item));
+                }
+        }
+
+        function addLi(listItem) {
+            var ulTag = document.getElementById("listULtag");
+            var liTag = document.createElement("li");
+            liTag.className = "listElement";
+            ulTag.appendChild(liTag);
+            liTag.appendChild(document.createTextNode(listItem));
+
+            toDoList.push(listItem);
+            localStorage.setItem('toDoList', JSON.stringify(toDoList))
+        }
+
+        function submitFunc() {
+            var inputName = document.forms["todoListItems"]["inputItemName"].value;
+            if (inputName == "") {
+                alert("Name of task must be filled out");
+                return false;
+            }
+            document.forms["todoListItems"]["inputItemName"].value = "";
+            addLi(inputName);
+        }
+
+    </script>
+    
+</body>
+</html>
